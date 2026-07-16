@@ -6,6 +6,34 @@ interface StarBackgroundProps {
   activePlanets: Set<string>;
 }
 
+
+let sigilsCanvas: HTMLCanvasElement | null = null;
+function getSigilsCanvas(colCount: number, rowCount: number, cellSize: number, drawSigilFn: any) {
+  if (sigilsCanvas) return sigilsCanvas;
+  sigilsCanvas = document.createElement('canvas');
+  sigilsCanvas.width = colCount * cellSize;
+  sigilsCanvas.height = rowCount * cellSize;
+  const c = sigilsCanvas.getContext('2d');
+  if (!c) return sigilsCanvas;
+
+  c.strokeStyle = 'rgba(255, 255, 255, 0.015)';
+  c.lineWidth = 0.5;
+  for (let r = 0; r <= rowCount; r++) {
+    c.beginPath(); c.moveTo(0, r * cellSize); c.lineTo(colCount * cellSize, r * cellSize); c.stroke();
+  }
+  for (let col = 0; col <= colCount; col++) {
+    c.beginPath(); c.moveTo(col * cellSize, 0); c.lineTo(col * cellSize, rowCount * cellSize); c.stroke();
+  }
+
+  for (let r = 0; r < rowCount; r++) {
+    for (let col = 0; col < colCount; col++) {
+      const seedVal = (r * 13 + col * 37 + 7);
+      drawSigilFn(c, col * cellSize, r * cellSize, cellSize, seedVal);
+    }
+  }
+  return sigilsCanvas;
+}
+
 export default function StarBackground({ planets, activePlanets }: StarBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const animationRef = useRef<number | null>(null);
@@ -156,11 +184,19 @@ export default function StarBackground({ planets, activePlanets }: StarBackgroun
       c.restore();
     };
 
-    const draw = () => {
-      if (!canvas || !ctx) return;
+        let lastUpdate = performance.now();
+    const fpsInterval = 1000 / 30; // Throttle background canvas to 30 FPS
+
+    const draw = (timestamp: number) => {
+      animationRef.current = requestAnimationFrame(draw);
+
+      const elapsed = timestamp - lastUpdate;
+      if (elapsed < fpsInterval) return;
+      lastUpdate = timestamp - (elapsed % fpsInterval);
+if (!canvas || !ctx) return;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      timeRef.current += 0.00045; // Slow, majestic rotation (not whimsical)
+      timeRef.current += (elapsed / 1000) * 0.027; // Slow, majestic rotation (not whimsical)
 
       const cx = canvas.width / 2;
       const cy = canvas.height / 2;
@@ -422,43 +458,11 @@ export default function StarBackground({ planets, activePlanets }: StarBackgroun
       const gStartX = canvas.width - gridWidth - 50;
       const gStartY = canvas.height - gridHeight - 110;
 
-      if (gStartY > 250 && gStartX > cx + 150) {
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
-        ctx.lineWidth = 0.5;
-
-        // Draw grid bounding dividers
-        for (let r = 0; r <= srgRowCount; r++) {
-          const rx = gStartX;
-          const ry = gStartY + r * cellSize;
-          ctx.beginPath();
-          ctx.moveTo(rx, ry);
-          ctx.lineTo(rx + gridWidth, ry);
-          ctx.stroke();
+      if (gStartY > 250 && gStartX > cx + 150)   {
+        const sCanvas = getSigilsCanvas(srgColCount, srgRowCount, cellSize, drawAlchemicalSigil);
+        if (sCanvas) {
+          ctx.drawImage(sCanvas, gStartX, gStartY);
         }
-        for (let c = 0; c <= srgColCount; c++) {
-          const rx = gStartX + c * cellSize;
-          const ry = gStartY;
-          ctx.beginPath();
-          ctx.moveTo(rx, ry);
-          ctx.lineTo(rx, ry + gridHeight);
-          ctx.stroke();
-        }
-
-        // Draw mini alchemical symbols deterministically inside cells
-        for (let r = 0; r < srgRowCount; r++) {
-          for (let c = 0; c < srgColCount; c++) {
-            const x = gStartX + c * cellSize;
-            const y = gStartY + r * cellSize;
-            const seedVal = (r * 13 + c * 37 + 7);
-            drawAlchemicalSigil(ctx, x, y, cellSize, seedVal);
-          }
-        }
-
-        // Grid caption
-        ctx.fillStyle = 'rgba(215, 205, 190, 0.25)';
-        ctx.font = '6.5px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        ctx.fillText('SIGIL_MATRIX // CHRONOS_SEALS', gStartX + gridWidth, gStartY - 10);
       }
 
       // ─── PART F: TELEMETRY ANNOTATIONS IN SCREEN MARGINS ───
@@ -589,11 +593,9 @@ export default function StarBackground({ planets, activePlanets }: StarBackgroun
         ctx.stroke();
         ctx.setLineDash([]);
       }
-
-      animationRef.current = requestAnimationFrame(draw);
     };
 
-    draw();
+    animationRef.current = requestAnimationFrame(draw);
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);

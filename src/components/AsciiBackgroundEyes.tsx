@@ -82,8 +82,16 @@ export default function AsciiBackgroundEyes() {
     let animationId: number;
     let blinkTimer = Math.random() * 2000 + 3000; // time until next blink
 
+        let lastUpdate = performance.now();
+    const fpsInterval = 1000 / 30; // Throttle preformatted text recalculation to 30 FPS
+
     const run = (timestamp: number) => {
-      const m = mouseRef.current;
+      animationId = requestAnimationFrame(run);
+
+      const elapsed = timestamp - lastUpdate;
+      if (elapsed < fpsInterval) return;
+      lastUpdate = timestamp - (elapsed % fpsInterval);
+const m = mouseRef.current;
       const s = stateRef.current;
       const now = performance.now();
 
@@ -112,7 +120,7 @@ export default function AsciiBackgroundEyes() {
           s.targetId = '';
         }
       } else {
-        s.mouseIdleTime += 16.67;
+        s.mouseIdleTime += elapsed;
         // If mouse is idle and we aren't explicitly lock-tracking an event card:
         if (s.mouseIdleTime > 1500 && s.action === 'mouse') {
           // Time to look at a card!
@@ -149,8 +157,12 @@ export default function AsciiBackgroundEyes() {
       }
 
       // Smooth easing of pupils
-      m.x += (targetX - m.x) * (isTrackingTarget ? 0.15 : 0.08);
-      m.y += (targetY - m.y) * (isTrackingTarget ? 0.15 : 0.08);
+            // Smooth pupillary easing (frame-rate independent scaling)
+      const speedScale = elapsed / 16.67;
+      const easeRate = isTrackingTarget ? 0.15 : 0.08;
+      const scaledEase = 1 - Math.pow(1 - easeRate, speedScale);
+      m.x += (targetX - m.x) * scaledEase;
+      m.y += (targetY - m.y) * scaledEase;
 
       // Handle Jitter/Shaking for Crazy/Cursed state
       let containerTransform = 'none';
@@ -179,7 +191,7 @@ export default function AsciiBackgroundEyes() {
 
       // 4. Handle Blink Logic
       const blink = blinkRef.current;
-      blink.timer += 16.67; // approx ms per frame
+      blink.timer += elapsed; // approx ms per frame
       
       if (isCrazy) {
         // Constantly make eyelids twitch and spasm frantically
@@ -190,7 +202,7 @@ export default function AsciiBackgroundEyes() {
           blink.state = 'closing';
           blink.timer = 0;
         } else if (blink.state === 'closing') {
-          blink.progress -= 0.18; // close speed
+          blink.progress -= 0.18 * speedScale; // close speed
           if (blink.progress <= 0) {
             blink.progress = 0;
             blink.state = 'closed';
@@ -202,7 +214,7 @@ export default function AsciiBackgroundEyes() {
             blink.timer = 0;
           }
         } else if (blink.state === 'opening') {
-          blink.progress += 0.15; // open speed
+          blink.progress += 0.15 * speedScale; // open speed
           if (blink.progress >= 1) {
             blink.progress = 1;
             blink.state = 'open';
