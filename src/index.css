@@ -40,6 +40,11 @@
 }
 
 /* ── OVERALL SYSTEM ── */
+*, *::before, *::after {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
 html, body, #root {
   height: 100vh;
   min-height: 100vh;
@@ -47,12 +52,24 @@ html, body, #root {
   overflow: hidden !important;
   margin: 0;
   padding: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 body {
   background-color: var(--void);
   color: var(--parchment);
   font-family: 'Cormorant Garamond', serif;
+}
+
+/* Ensure inputs, select, and textarea elements allow native text input interaction and selectability */
+input, select, textarea {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
 }
 
 /* Background Atmosphere - Dark ritual vignette */
