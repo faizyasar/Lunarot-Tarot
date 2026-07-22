@@ -5,8 +5,11 @@ import {
   TEMPLATES_SYNTHESIS,
   CARD_SINS,
   SIN_MANIFESTATIONS,
+  CARD_SYNERGIES,
+  findSynergies,
   NatalUser,
   DrawnCard,
+  CardSynergy,
 } from './types';
 
 export function pick<T>(arr: T[]): T {
@@ -28,7 +31,7 @@ export function makeLine(chartSign: string, cardName: string, isReversed: boolea
     .replace('{sign}', chartSign);
 }
 
-export function calculateSinOutcome(drawn: DrawnCard[]): string {
+export function calculateSinOutcome(drawn: DrawnCard[]): { text: string; dominantSin: string } {
   const sinCounts: Record<string, number> = {};
   
   drawn.forEach(c => {
@@ -50,7 +53,10 @@ export function calculateSinOutcome(drawn: DrawnCard[]): string {
   if (negativeCount >= 2) type = 'curse';
   
   const manifestation = SIN_MANIFESTATIONS[dominantSin]?.[type];
-  return manifestation || "The void is silent on your destiny.";
+  return {
+    dominantSin,
+    text: manifestation || "The void is silent on your destiny.",
+  };
 }
 
 export function makeSynthesis(natal: NatalUser, drawn: DrawnCard[]): string {
@@ -90,7 +96,20 @@ export function makeSynthesisParagraphs(natal: NatalUser, drawn: DrawnCard[]): s
   
   let p2 = `The arc from ${drawn[0].name} to ${drawn[2].name} passes through ${drawn[1].name}. ${a1} becoming ${a2}, then ${a3}. A ${sunAdj} instinct meeting a ${moonAdj} horizon. The chart already knew. The cards only confirmed it. `;
   
-  p2 += calculateSinOutcome(drawn);
+  const sinOutcome = calculateSinOutcome(drawn);
+  p2 += sinOutcome.text;
+
+  // Check for synergies
+  const synergies = findSynergies(drawn);
+  if (synergies.length > 0) {
+    p2 += '\n\n✦ SYNERGIES DETECTED: ' + synergies.map(s => 
+      `${s.name}: ${s.description}`
+    ).join(' | ');
+  }
 
   return [single, p2];
+}
+
+export function findActiveSynergies(drawn: DrawnCard[]): CardSynergy[] {
+  return findSynergies(drawn);
 }

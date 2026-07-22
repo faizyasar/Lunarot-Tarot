@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { SIGN_NAMES, getSunSign, getMoonSign, getRisingSign, toJD, NatalUser } from '../types';
+import BootLoader from './BootLoader';
+import GothicButton from './GothicButton';
 
 interface IntakeScreenProps {
   onSubmit: (user: NatalUser) => void;
@@ -36,8 +38,6 @@ export default function IntakeScreen({ onSubmit }: IntakeScreenProps) {
   
   // Simulated OS loading state after submission
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const [bootProgress, setBootProgress] = useState(0);
-  const [activeLogIndex, setActiveLogIndex] = useState(0);
 
   // Moving eye graphic state
   const [eyeFrameIndex, setEyeFrameIndex] = useState(0);
@@ -73,66 +73,34 @@ export default function IntakeScreen({ onSubmit }: IntakeScreenProps) {
     }
     setErrorMsg('');
     setIsLoggingIn(true);
-    setBootProgress(0);
-    setActiveLogIndex(0);
   };
 
-  // Run progress bars
-  useEffect(() => {
-    if (!isLoggingIn) return;
+  const handleBootComplete = () => {
+    const [year, month, day] = dob.split('-').map(Number);
+    let birthHour: number | null = null;
+    if (time) {
+      const [h, m] = time.split(':').map(Number);
+      birthHour = h + m / 60;
+    }
+    const jd = toJD(year, month, day, birthHour || 12);
+    const sunIdx = getSunSign(month, day);
+    const moonIdx = getMoonSign(jd);
+    const risingIdx = birthHour !== null ? getRisingSign(jd, birthHour) : null;
 
-    const interval = setInterval(() => {
-      setBootProgress((prev) => {
-        const next = prev + Math.floor(Math.random() * 8) + 6;
-        if (next >= 100) {
-          clearInterval(interval);
-          
-          // Complete submission
-          const [year, month, day] = dob.split('-').map(Number);
-          let birthHour: number | null = null;
-          if (time) {
-            const [h, m] = time.split(':').map(Number);
-            birthHour = h + m / 60;
-          }
-          const jd = toJD(year, month, day, birthHour || 12);
-          const sunIdx = getSunSign(month, day);
-          const moonIdx = getMoonSign(jd);
-          const risingIdx = birthHour !== null ? getRisingSign(jd, birthHour) : null;
+    const finalUser: NatalUser = {
+      sun: SIGN_NAMES[sunIdx],
+      moon: SIGN_NAMES[moonIdx],
+      rising: risingIdx !== null ? SIGN_NAMES[risingIdx] : null,
+      hasRising: risingIdx !== null,
+      name: name.trim() || 'COGNITION_VESSEL_N',
+      sunIdx,
+      moonIdx,
+      risingIdx,
+      jd
+    };
 
-          const finalUser: NatalUser = {
-            sun: SIGN_NAMES[sunIdx],
-            moon: SIGN_NAMES[moonIdx],
-            rising: risingIdx !== null ? SIGN_NAMES[risingIdx] : null,
-            hasRising: risingIdx !== null,
-            name: name.trim() || 'COGNITION_VESSEL_N',
-            sunIdx,
-            moonIdx,
-            risingIdx,
-            jd
-          };
-
-          // Short final timeout for perfect dramatic timing
-          setTimeout(() => {
-            onSubmit(finalUser);
-          }, 400);
-
-          return 100;
-        }
-
-        // Advance logs corresponding to progress increments
-        const logPct = next / 100;
-        const targetLogIdx = Math.min(
-          Math.floor(logPct * LOADING_SECTOR_LOGS.length),
-          LOADING_SECTOR_LOGS.length - 1
-        );
-        setActiveLogIndex(targetLogIdx);
-
-        return next;
-      });
-    }, 110);
-
-    return () => clearInterval(interval);
-  }, [isLoggingIn, dob, time, name, onSubmit]);
+    onSubmit(finalUser);
+  };
 
   // Astrological live calculation preview values
   const [year, month, day] = dob ? dob.split('-').map(Number) : [1990, 1, 1];
@@ -170,35 +138,11 @@ export default function IntakeScreen({ onSubmit }: IntakeScreenProps) {
 
       {isLoggingIn ? (
         /* ───── MICRO LOADING SEQUENCE (OS STYLE BOOT) ───── */
-        <div className="relative z-10 w-full max-w-md px-8 py-10 border border-white/10 bg-black text-left font-mono text-[9px] tracking-wider uppercase space-y-6">
-          <div className="flex justify-between items-center pb-2 border-b border-white/10">
-            <span>[ LUNAROT ENGINE OS v5.18 ]</span>
-            <span className="animate-pulse text-white">RE-LINKING CONDUIT</span>
-          </div>
-
-          <div className="space-y-2 text-white/70 min-h-[90px] text-[7.5px] tracking-widest leading-relaxed">
-            {LOADING_SECTOR_LOGS.slice(0, activeLogIndex + 1).map((log, idx) => (
-              <div key={idx} className="animate-[fade-in_0.3s_ease_forwards]">
-                {log}
-              </div>
-            ))}
-          </div>
-
-          {/* ASCII Horizontal Progress Bar */}
-          <div className="space-y-2">
-            <div className="flex justify-between text-[7px] text-white/40">
-              <span>INITIALIZING CHANNELS</span>
-              <span>{bootProgress}%</span>
-            </div>
-            <div className="text-[9px] tracking-normal font-sans text-white/80 select-none">
-              {"[".split("").concat(
-                Array(Math.floor(bootProgress / 4)).fill("█"),
-                Array(25 - Math.floor(bootProgress / 4)).fill("░"),
-                ["]"]
-              ).join("")}
-            </div>
-          </div>
-        </div>
+        <BootLoader
+          logs={LOADING_SECTOR_LOGS}
+          title="LUNAROT ENGINE OS v5.18"
+          onComplete={handleBootComplete}
+        />
       ) : (
         /* ───── UNIFIED TERMINAL REGISTRY LOGIN (ASSUMING ALREADY REGISTERED) ───── */
         <div className="relative z-10 w-full max-w-sm px-6 py-4 flex flex-col items-center justify-center text-center">
@@ -297,12 +241,13 @@ export default function IntakeScreen({ onSubmit }: IntakeScreenProps) {
 
           {/* ACTION STRIP */}
           <div className="mt-5 w-full space-y-3">
-            <button
+            <GothicButton
+              variant="primary"
+              fullWidth
               onClick={handleTriggerLogin}
-              className="w-full py-2.5 border border-white bg-white text-black hover:bg-black hover:text-white hover:border-white text-[8px] font-mono font-bold uppercase tracking-[0.25em] transition-all duration-300 rounded-none cursor-pointer"
             >
               ◆ EXECUTE SYSTEM LINK // BOOT OS
-            </button>
+            </GothicButton>
             <div className="font-mono text-[6px] tracking-[0.25em] text-white/30 uppercase select-none">
               AUTOPILOT CONNECT PORT 3000 // CHANCELLERY OF THE VOID
             </div>
