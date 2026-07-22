@@ -1,3 +1,33 @@
+
+  (function() {
+    function clearSelection() {
+      if (window.getSelection) {
+        const sel = window.getSelection();
+        if (sel && sel.removeAllRanges) {
+          const active = document.activeElement;
+          if (!active || (active.tagName !== 'INPUT' && active.tagName !== 'TEXTAREA')) {
+            sel.removeAllRanges();
+          }
+        }
+      }
+    }
+
+    ['selectstart', 'contextmenu', 'dragstart'].forEach(function(evtName) {
+      document.addEventListener(evtName, function(e) {
+        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+          return false;
+        }
+      }, { capture: true, passive: false });
+    });
+
+    ['selectionchange', 'touchstart', 'touchmove', 'touchend', 'touchcancel', 'pointerdown', 'pointermove', 'pointerup'].forEach(function(evtName) {
+      document.addEventListener(evtName, function(e) {
+        clearSelection();
+      }, { capture: true, passive: true });
+    });
+  })();
+
 const SUITS = [
   { key: "cups", num: "♥", glyph: "♥", tradition: "water" },
   { key: "wands", num: "🔥", glyph: "🔥", tradition: "fire" },

@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 <html><head>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="background-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="82722a92-b49d-43c6-9fc2-65bc6a52cfd3"></script>
@@ -9,6 +17,48 @@
 <x-dc>
 <helmet>
 <style>
+
+  html, body {
+    background-color: #000000 !important;
+    background: #000000 !important;
+    color: #ffffff;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    -webkit-user-drag: none !important;
+    user-drag: none !important;
+  }
+
+  *, *::before, *::after, div, canvas, svg, span, p, h1, h2, h3, h4, h5, h6, button, section, main, #root, x-dc {
+    -webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    -khtml-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    -webkit-user-drag: none !important;
+    user-drag: none !important;
+  }
+
+  input, select, textarea {
+    -webkit-user-select: text !important;
+    -moz-user-select: text !important;
+    -ms-user-select: text !important;
+    user-select: text !important;
+  }
+
   *, *::before, *::after { -webkit-tap-highlight-color: transparent !important; -webkit-touch-callout: none !important; -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important; user-select: none !important; -webkit-user-drag: none !important; } input, select, textarea { -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important; }
   @keyframes bead-pop-in { 0%{ transform:scale(0); opacity:0;} 60%{ transform:scale(1.4); opacity:1;} 100%{ transform:scale(1); opacity:1;} }
   @keyframes bead-burn { 0%{ transform:scale(1) translateY(0); opacity:1; background:#ff5a2e;} 40%{ transform:scale(1.6) translateY(-4px); opacity:0.9; background:#ff2e00;} 100%{ transform:scale(0.2) translateY(-14px); opacity:0; background:#3a1a10;} }
