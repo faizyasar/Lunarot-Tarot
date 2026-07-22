@@ -571,7 +571,7 @@
 
   <sc-if value="{{ gameOver }}" hint-placeholder-val="{{ false }}">
         <div style="position:absolute;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:20px;box-sizing:border-box;animation:{{ gameOverAnim }};overflow:hidden;">
-          <img src="c26dd2ea-7980-4076-99a8-dd20d15006db" alt="skeleton reaching" sc-camel-on-click="{{ handleRestartClick }}" style="width: 480px; max-width: 88vw; height: auto; object-fit: contain; filter: drop-shadow(0 0 20px rgba(192,57,43,0.55)); cursor:pointer; user-select: none;animation:gameover-skull-in 0.8s cubic-bezier(0.34,1.56,0.64,1) both;">
+          <img draggable="false" src="c26dd2ea-7980-4076-99a8-dd20d15006db" alt="skeleton reaching" sc-camel-on-click="{{ handleRestartClick }}" style="width: 480px; max-width: 88vw; height: auto; object-fit: contain; filter: drop-shadow(0 0 20px rgba(192,57,43,0.55)); cursor:pointer; user-select: none;animation:gameover-skull-in 0.8s cubic-bezier(0.34,1.56,0.64,1) both;">
           <div style="font-size:26px;letter-spacing:0.35em;color:#c0392b;animation:gameover-text-in 0.4s ease 0.35s both;">GAME OVER</div>
           <div style="font-size:9px;letter-spacing:0.2em;color:#a89f92;text-transform:uppercase;animation:gameover-text-in 0.4s ease 0.45s both;">the conduit runs dry</div>
           <div style="font-size:11px;color:#fff;margin-top:8px;animation:gameover-text-in 0.4s ease 0.55s both;">final score: {{ score }}</div>
@@ -586,7 +586,7 @@
       </sc-if>
       <sc-if value="{{ win }}" hint-placeholder-val="{{ false }}">
         <div style="position:absolute;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:20px;box-sizing:border-box;animation:{{ winAnim }};overflow:hidden;">
-          <img src="8e60e189-3b45-431b-9871-fb109d1383cd" alt="radiant skull" sc-camel-on-click="{{ handleRestartClick }}" style="width: 361px; height: 406px; object-fit: contain; filter: drop-shadow(0 0 24px rgba(255,214,120,0.8)) sepia(0.7) hue-rotate(20deg) saturate(1.6) brightness(1.3); cursor:pointer; user-select: none;animation:gameover-skull-in 0.8s cubic-bezier(0.34,1.56,0.64,1) both;">
+          <img draggable="false" src="8e60e189-3b45-431b-9871-fb109d1383cd" alt="radiant skull" sc-camel-on-click="{{ handleRestartClick }}" style="width: 361px; height: 406px; object-fit: contain; filter: drop-shadow(0 0 24px rgba(255,214,120,0.8)) sepia(0.7) hue-rotate(20deg) saturate(1.6) brightness(1.3); cursor:pointer; user-select: none;animation:gameover-skull-in 0.8s cubic-bezier(0.34,1.56,0.64,1) both;">
           <div style="font-size:26px;letter-spacing:0.35em;color:#ffe6a8;text-shadow:0 0 16px rgba(255,214,120,0.8);animation:gameover-text-in 0.4s ease 0.35s both;">VICTORY</div>
           <div style="font-size:9px;letter-spacing:0.2em;color:#a89f92;text-transform:uppercase;animation:gameover-text-in 0.4s ease 0.45s both;">the conduit overflows with light</div>
           <div style="font-size:11px;color:#fff;margin-top:8px;animation:gameover-text-in 0.4s ease 0.55s both;">final score: {{ score }}</div>
@@ -635,22 +635,22 @@
 
       <div style="position:absolute;inset:-12% -32% -6% -32%;z-index:0;display:flex;justify-content:space-between;pointer-events:none;">
         <div ref="{{ setBackLeftHandRef }}" style="width:32%;display:flex;align-items:flex-end;transform-origin:bottom left;transition:transform 0.35s cubic-bezier(0.22,1,0.36,1);animation:{{ handFlashAnim }}, {{ handsDanceBLAnim }};">
-          <img src="2eef5ff0-d16e-4155-ac0f-4a10d6ae79ee" alt="" style="width: 100%; display: block; filter: drop-shadow(0 0 10px rgba(0,0,0,0.85)) brightness(0.55)">
+          <img draggable="false" src="2eef5ff0-d16e-4155-ac0f-4a10d6ae79ee" alt="" style="width: 100%; display: block; filter: drop-shadow(0 0 10px rgba(0,0,0,0.85)) brightness(0.55)">
         </div>
         <div ref="{{ setBackRightHandRef }}" style="width:32%;display:flex;align-items:flex-end;justify-content:flex-end;transform-origin:bottom right;transition:transform 0.35s cubic-bezier(0.22,1,0.36,1);animation:{{ handFlashAnim }}, {{ handsDanceBRAnim }};">
-          <img src="2eef5ff0-d16e-4155-ac0f-4a10d6ae79ee" alt="" style="width:100%;height:auto;display:block;transform:scaleX(-1);filter:drop-shadow(0 0 10px rgba(0,0,0,0.85)) brightness(0.55);">
+          <img draggable="false" src="2eef5ff0-d16e-4155-ac0f-4a10d6ae79ee" alt="" style="width:100%;height:auto;display:block;transform:scaleX(-1);filter:drop-shadow(0 0 10px rgba(0,0,0,0.85)) brightness(0.55);">
         </div>
       </div>
 
       <div style="position: absolute; left: 50%; transform: translateX(-50%); z-index: 1; overflow: visible; height: 352px; width: 781px; top: 261px;">
       <div style="position:absolute;inset:0;transform-origin:50% 50%;animation:chest-breath 4.5s ease-in-out infinite;">
-        <img ref="{{ setChestImgRef }}" src="c89017f0-dd48-4008-9edb-7c8bd808411d" alt="chest" style="position: static; inset: 0; width: 762px; height: 436px; object-fit: fill; object-position: top center; pointer-events: none; user-select: none">
+        <img draggable="false" ref="{{ setChestImgRef }}" src="c89017f0-dd48-4008-9edb-7c8bd808411d" alt="chest" style="position: static; inset: 0; width: 762px; height: 436px; object-fit: fill; object-position: top center; pointer-events: none; user-select: none">
       </div>
       </div>
 
       <div ref="{{ setHeadTiltRef }}" style="position: absolute; left: 180px; top: -56px; width: 292px; aspect-ratio: 547/734; transform-origin: 50% 88%; transform: translateX(-50%); z-index: 2; height: 334px" data-om-label="skelehead">
       <div style="position:absolute;inset:0;transform-origin:50% 88%;animation:skull-breath 3.6s ease-in-out infinite 0.4s;">
-        <img ref="{{ setHeadImgRef }}" src="94447f09-f93a-4577-874e-a7bd5f31bf32" alt="skull" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none;filter:{{ skeletonFilter }};">
+        <img draggable="false" ref="{{ setHeadImgRef }}" src="94447f09-f93a-4577-874e-a7bd5f31bf32" alt="skull" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none;filter:{{ skeletonFilter }};">
 
         <div style="position: absolute; left: 85px; top: 72.6px; width: 15%; aspect-ratio: 14/34; transform: translate(-50%,-46%) scale({{ flameScale }}); opacity: {{ flameOpacity }}; transition: transform 1.4s ease, opacity 1.4s ease; pointer-events: none" data-om-label="Flameleft">
           <canvas ref="{{ setFireLeftRef }}" width="14" height="34" style="width:100%;height:100%;image-rendering:pixelated;display:block;filter:drop-shadow(0 0 3px rgba(255,150,50,0.75)) drop-shadow(0 0 6px rgba(255,100,20,0.45));"></canvas>
@@ -663,10 +663,10 @@
 
       <div style="position:absolute;inset:-6% -16% -4% -16%;z-index:3;display:flex;justify-content:space-between;pointer-events:none;">
         <div ref="{{ setLeftHandRef }}" style="width:32%;display:flex;align-items:flex-end;transform-origin:bottom left;transition:transform 0.35s cubic-bezier(0.22,1,0.36,1);animation:{{ handFlashAnim }}, {{ handsDanceFLAnim }};">
-          <img src="2eef5ff0-d16e-4155-ac0f-4a10d6ae79ee" alt="" style="width: 100%; height: auto; display: block; filter: drop-shadow(0 0 10px rgba(0,0,0,0.85)); align-self: auto">
+          <img draggable="false" src="2eef5ff0-d16e-4155-ac0f-4a10d6ae79ee" alt="" style="width: 100%; height: auto; display: block; filter: drop-shadow(0 0 10px rgba(0,0,0,0.85)); align-self: auto">
         </div>
         <div ref="{{ setRightHandRef }}" style="width:32%;display:flex;align-items:flex-end;justify-content:flex-end;transform-origin:bottom right;transition:transform 0.35s cubic-bezier(0.22,1,0.36,1);animation:{{ handFlashAnim }}, {{ handsDanceFRAnim }};">
-          <img src="2eef5ff0-d16e-4155-ac0f-4a10d6ae79ee" alt="" style="width:100%;height:auto;display:block;transform:scaleX(-1);filter:drop-shadow(0 0 10px rgba(0,0,0,0.85));">
+          <img draggable="false" src="2eef5ff0-d16e-4155-ac0f-4a10d6ae79ee" alt="" style="width:100%;height:auto;display:block;transform:scaleX(-1);filter:drop-shadow(0 0 10px rgba(0,0,0,0.85));">
         </div>
       </div>
 
@@ -679,7 +679,7 @@
       <sc-if value="{{ hasActiveCard }}" hint-placeholder-val="{{ false }}">
         <div style="position: absolute; inset: 0; z-index: 65; display: flex; flex-direction: column; align-items: center; justify-content: center; animation: fade-in .3s ease forwards; background-color: #00000000">
           <div style="font-size:8px;letter-spacing:0.3em;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:10px;">drew</div><div style="margin-top:14px;font-size:8px;letter-spacing:0.15em;color:rgba(255,255,255,0.4);animation:card-pulse 1.6s ease-in-out infinite;">{{ cardHint }}</div>
-          <img src="3cf2f200-ca62-4748-b2f1-4cba5130d6fd" alt="img_20260721_224922" width="331" height="157" style="height: auto; display: block; object-fit: contain; width: 88%; aspect-ratio: 331 / 157; position: absolute; left: 50%; top: 234px; z-index: 1; transform: translate(-50%, {{ skeleHandsOffset }}) scale({{ skeleHandsScale }}); opacity: {{ skeleHandsOpacity }}; transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease; animation: {{ skeleHandsEnterAnim }}; filter: brightness(1.6) drop-shadow(0 0 10px rgba(0,0,0,0.9))" data-om-label="Skeleton present card">
+          <img draggable="false" src="3cf2f200-ca62-4748-b2f1-4cba5130d6fd" alt="img_20260721_224922" width="331" height="157" style="height: auto; display: block; object-fit: contain; width: 88%; aspect-ratio: 331 / 157; position: absolute; left: 50%; top: 234px; z-index: 1; transform: translate(-50%, {{ skeleHandsOffset }}) scale({{ skeleHandsScale }}); opacity: {{ skeleHandsOpacity }}; transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s ease; animation: {{ skeleHandsEnterAnim }}; filter: brightness(1.6) drop-shadow(0 0 10px rgba(0,0,0,0.9))" data-om-label="Skeleton present card">
           <div style="position:relative;z-index:2;transform:{{ cardTransform }};opacity:{{ cardOpacity }};filter:{{ cardFilter }};transition:transform .7s ease, opacity .7s ease, filter .7s ease;animation:{{ cardEnterAnim }};">
             <x-import component-from-global-scope="LunarotDesignSystem_03ee3e.TarotCard" card="{{ activeCardForDS }}" flipped="{{ isRevealedActive }}" reversed="{{ activeCardReversed }}" sc-camel-on-click="{{ handleUnravel }}" width="132px" height="196px" hint-size="132,196"></x-import>
           </div>
@@ -695,10 +695,10 @@
       </sc-for>
     </div>
   <div ref="{{ setMainLeftHandRef }}" style="position:absolute;left:-45px;top:340px;width:241px;height:398px;opacity:{{ mainHandsOpacity }};transition:opacity 0.5s ease;pointer-events:none;z-index:8;animation:{{ mainHandsIntroAnim }};">
-    <img src="badf07b1-7cc7-49cd-afa3-0937f56a274b" alt="" style="width:100%;height:100%;display:block;filter:drop-shadow(0 0 14px rgba(0,0,0,0.9));-webkit-mask-image:linear-gradient(130deg, black 55%, transparent 92%);mask-image:linear-gradient(130deg, black 55%, transparent 92%);">
+    <img draggable="false" src="badf07b1-7cc7-49cd-afa3-0937f56a274b" alt="" style="width:100%;height:100%;display:block;filter:drop-shadow(0 0 14px rgba(0,0,0,0.9));-webkit-mask-image:linear-gradient(130deg, black 55%, transparent 92%);mask-image:linear-gradient(130deg, black 55%, transparent 92%);">
   </div>
   <div ref="{{ setMainRightHandRef }}" style="position:absolute;left:763px;top:340px;width:250px;height:358px;opacity:{{ mainHandsOpacity }};transition:opacity 0.5s ease;pointer-events:none;z-index:8;animation:{{ mainHandsIntroAnim }};">
-    <img src="9bb2879d-d4f8-4be2-85a1-2e18c1f94485" alt="" style="width:100%;height:100%;display:block;filter:drop-shadow(0 0 14px rgba(0,0,0,0.9));-webkit-mask-image:linear-gradient(230deg, black 55%, transparent 92%);mask-image:linear-gradient(230deg, black 55%, transparent 92%);">
+    <img draggable="false" src="9bb2879d-d4f8-4be2-85a1-2e18c1f94485" alt="" style="width:100%;height:100%;display:block;filter:drop-shadow(0 0 14px rgba(0,0,0,0.9));-webkit-mask-image:linear-gradient(230deg, black 55%, transparent 92%);mask-image:linear-gradient(230deg, black 55%, transparent 92%);">
   </div>
   </main>
 
