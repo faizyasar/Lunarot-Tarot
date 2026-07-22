@@ -720,7 +720,7 @@
         </div>
       </div>
 
-      <canvas ref="{{ setBoardRef }}" sc-camel-on-pointer-down="{{ handlePointerDown }}" style="position:absolute;inset:0;width:100%;height:100%;z-index:4;cursor:{{ boardCursor }};touch-action:none;{{ boardIntroStyle }}"></canvas>
+      <canvas oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;" ref="{{ setBoardRef }}" sc-camel-on-pointer-down="{{ handlePointerDown }}" style="position:absolute;inset:0;width:100%;height:100%;z-index:4;cursor:{{ boardCursor }};touch-action:none;{{ boardIntroStyle }}"></canvas>
 
       <sc-for list="{{ deathParticles }}" as="dp" hint-placeholder-count="0">
         <div style="{{ dp.pstyle }}"></div>

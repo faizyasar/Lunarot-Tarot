@@ -499,7 +499,11 @@ class Component extends DCLogic {
   setCrtGlitchRef = (el) => { this.crtGlitchEl = el; };
 
   handlePointerDown = (e) => {
-    if (this.state.activeCard || this.state.gameOver || this.state.win || this.state.beads <= 0 || this.state.phase !== "play") return;
+    if (e) {
+      if (typeof e.preventDefault === "function") e.preventDefault();
+      if (typeof e.stopPropagation === "function") e.stopPropagation();
+    }
+    if (this.state.activeCard || this.state.gameOver || this.state.win || this.state.beads <= 0 || this.state.phase !== "play") return false;
     const canvas = this.boardCanvas;
     if (!canvas) return;
     const rect = canvas.getBoundingClientRect();
